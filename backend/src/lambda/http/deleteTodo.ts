@@ -9,13 +9,16 @@ import { deleteOne } from '../../repository/todo-repository'
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const todoId = event.pathParameters.todoId
-    const email = parseUserId(event.headers.Authorization.split(" ")[1]);
+    const userId = parseUserId(event.headers.Authorization.split(" ")[1]);
 
-    await deleteOne(todoId, email);
+    await deleteOne(todoId, userId);
 
-    
     return {
       statusCode: 200,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify(true)
     }
   }

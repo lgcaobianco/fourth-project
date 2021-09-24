@@ -13,12 +13,16 @@ export const handler = middy(
     const todoId = event.pathParameters.todoId
     const updatedTodo: UpdateTodoRequest = JSON.parse(event.body)
 
-    const email = parseUserId(event.headers.Authorization.split(" ")[1]);
+    const userId = parseUserId(event.headers.Authorization.split(" ")[1]);
 
-    const response = update(todoId, updatedTodo, email);
+    const response = update(todoId, updatedTodo, userId);
 
     return {
-      statusCode: 200,
+      statusCode: 200,  
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify(response)
     };
   });

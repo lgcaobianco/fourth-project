@@ -9,11 +9,15 @@ import { save } from '../../repository/todo-repository'
 export const handler = middy(
   async (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> => {
     const newTodo: CreateTodoRequest = JSON.parse(event.body)
-    const email = parseUserId(event.headers.Authorization.split(" ")[1]);
-    const response = await save(newTodo, email);
+    const userId = parseUserId(event.headers.Authorization.split(" ")[1]);
+    const response = await save(newTodo, userId);
 
     return {
       statusCode: 201,
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Credentials': true,
+      },
       body: JSON.stringify(response)
     };
   });
