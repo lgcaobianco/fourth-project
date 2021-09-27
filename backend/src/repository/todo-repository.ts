@@ -27,9 +27,7 @@ export function findAllByUserId(userId: String) {
 
 export async function save(todoRequest: CreateTodoRequest, userId: string) {
   const documentClient = new AWS.DynamoDB.DocumentClient();
-  const todo = {
-    ...todoRequest
-  } as TodoItem;
+  const todo = { ...todoRequest } as TodoItem;
   todo.todoId = uuid.v4();
   todo.userId = userId;
   todo.createdAt = new Date().toISOString();
@@ -66,16 +64,22 @@ export function update(id: String, todoUpdated: UpdateTodoRequest, userId: Strin
   }).promise();
 }
 
-export function deleteOne(id: String, userId: String) {
+export async function deleteOne(id: string, userId: string) {
   const documentClient = new AWS.DynamoDB.DocumentClient();
-  return documentClient.delete({
+  await documentClient.delete({
     TableName: 'Todo-dev',
     Key: {
-      "todoId": {S: id},
-      "userId": {S: userId}
+      "todoId": id,
+      "userId": userId
     },
-  });
+    ConditionExpression: 'todoId = :todoId',
+    ExpressionAttributeValues: {
+      ':todoId': id
+    }
+  }).promise();
 }
+
+
 
 export async function getPresignedImageUrl(
   todoId: String,
