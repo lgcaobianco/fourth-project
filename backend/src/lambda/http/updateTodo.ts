@@ -17,6 +17,8 @@ export const handler = middy(
 
     const response = update(todoId, updatedTodo, userId);
 
+    console.log("[INFO] response from update: " + JSON.stringify(response));
+
     return {
       statusCode: 200,  
       headers: {

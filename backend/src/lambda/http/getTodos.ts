@@ -16,6 +16,8 @@ export const handler = middy(
     console.log("[INFO] username is " + userId);
     
     const todoList = await findAllByUserId(userId);
+    
+    console.log("[INFO] todo list received: " + JSON.stringify(todoList));
 
     return {
       statusCode: 200,

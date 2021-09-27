@@ -27,6 +27,8 @@ async (event: APIGatewayProxyEvent): Promise < APIGatewayProxyResult > => {
     imageId,
     userId
   );
+  console.log("[INFO] signed url: " + signedUrl);
+  
 
   return {
     statusCode: 201,

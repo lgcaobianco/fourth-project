@@ -11,7 +11,10 @@ export const handler = middy(
     const todoId = event.pathParameters.todoId
     const userId = parseUserId(event.headers.Authorization.split(" ")[1]);
 
-    await deleteOne(todoId, userId);
+    const response = await deleteOne(todoId, userId);
+   
+   
+    console.log("[INFO] response from delete: " + JSON.stringify(response));
 
     return {
       statusCode: 200,

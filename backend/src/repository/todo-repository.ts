@@ -25,7 +25,7 @@ export function findAllByUserId(userId: String) {
     .promise();
 }
 
-export function save(todoRequest: CreateTodoRequest, userId: string) {
+export async function save(todoRequest: CreateTodoRequest, userId: string) {
   const documentClient = new AWS.DynamoDB.DocumentClient();
   const todo = {
     ...todoRequest
@@ -33,12 +33,14 @@ export function save(todoRequest: CreateTodoRequest, userId: string) {
   todo.todoId = uuid.v4();
   todo.userId = userId;
   todo.createdAt = new Date().toISOString();
-  return documentClient
+  await documentClient
     .put({
       TableName: 'Todo-dev',
       Item: todo,
     })
     .promise();
+
+  return todo;
 }
 
 export function update(id: String, todoUpdated: UpdateTodoRequest, userId: String) {
