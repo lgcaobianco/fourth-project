@@ -111,6 +111,7 @@ functions:
           path: todos/{todoId}/attachment
           cors: true
           authorizer: Auth
+    iamRoleStatements:
       - Effect: Allow
         Action:
           - s3:PutObject
@@ -118,8 +119,9 @@ functions:
         Resource: arn:aws:s3:::${self:provider.environment.IMAGES_S3_BUCKET}/*
       - Effect: Allow
         Action:
+          - dynamodb:GetItem
           - dynamodb:UpdateItem
-        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}/index/${self:provider.environment.TODO_USER_INDEX}
+        Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.TODOS_TABLE}
   
   DeleteTodo:
     handler: src/lambda/http/deleteTodo.handler

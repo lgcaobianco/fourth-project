@@ -96,7 +96,7 @@ export async function getPresignedImageUrl(
     Expires: 300,
   });
   console.log(`Attachment url received was ${attachmentUrl}`);
-  documentClient.update({
+  await documentClient.update({
       TableName: 'Todo-dev',
       Key: {
         "todoId": todoId,
@@ -106,14 +106,6 @@ export async function getPresignedImageUrl(
       ExpressionAttributeValues: {
         ":attachmentUrl": `https://1523563-serverless-udagram-images-dev.s3.amazonaws.com/${imageId}`,
       },
-    },
-    function (err, data) {
-      if (err) {
-        throw new Error("Error " + err);
-      } else {
-        console.log("success uploading file", JSON.stringify(data));
-      }
-    }
-  );
+    }).promise();
   return attachmentUrl;
 }
