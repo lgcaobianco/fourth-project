@@ -5,10 +5,6 @@ import {
   APIGatewayProxyResult
 } from 'aws-lambda'
 import * as middy from 'middy'
-import {
-  cors,
-  httpErrorHandler
-} from 'middy/middlewares'
 
 import {
   parseUserId
@@ -41,11 +37,3 @@ async (event: APIGatewayProxyEvent): Promise < APIGatewayProxyResult > => {
     }),
   };
 });
-
-handler
-  .use(httpErrorHandler())
-  .use(
-    cors({
-      credentials: true
-    })
-  )
