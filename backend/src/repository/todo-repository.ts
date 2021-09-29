@@ -89,7 +89,7 @@ export async function getPresignedImageUrl(
 
   console.log(`todoId: ${todoId} - imageId: ${imageId} - userId: ${userId}`)
   const documentClient = new AWS.DynamoDB.DocumentClient();
-  const s3 = new AWS.S3();
+  const s3 = new AWS.S3({signatureVersion: 'v4'});
   const attachmentUrl = await s3.getSignedUrl("putObject", {
     Bucket: '1523563-serverless-udagram-images-dev',
     Key: imageId,
